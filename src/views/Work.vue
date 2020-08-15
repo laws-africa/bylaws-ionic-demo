@@ -16,7 +16,9 @@
         <ion-header translucent>
           <ion-toolbar>
             <ion-buttons slot="start">
-              <ion-back-button text="" default-href="/"></ion-back-button>
+              <ion-back-button :default-href="placeUrl"></ion-back-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
               <ion-menu-button></ion-menu-button>
             </ion-buttons>
           </ion-toolbar>
@@ -57,12 +59,17 @@
         return v.toLocaleLowerCase();
       }
     },
+    computed: {
+      placeUrl () {
+        return this.place ? ('/place/' + this.place.id) : '/';
+      }
+    },
     created () {
       fetchPlace(this.$route.params.place).then(place => {
         this.place = place;
         fetchPlaceWorks(this.place).then(works => {
           this.loading = false;
-          this.work = works.find(w => w.id == this.$route.params.work);
+          this.work = works.find(w => w.id === this.$route.params.work);
         });
       });
     }

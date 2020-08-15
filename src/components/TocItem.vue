@@ -15,8 +15,12 @@
     props: ['toc'],
     methods: {
       jump (id) {
+        // scroll manually, so that the href isn't added to the router history list
         const el = document.getElementById(id);
-        el.offsetParent.scrollTo({top: el.offsetTop - 65, behavior: 'smooth'});
+        const scrolling = document.getElementById('main-content')
+          .querySelector('ion-content').shadowRoot
+          .querySelector('main');
+        scrolling.scrollTop = el.offsetTop - 65;
       }
     }
   };

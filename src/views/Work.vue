@@ -12,7 +12,7 @@
         </ion-content>
       </ion-menu>
 
-      <div id="main-content">
+      <div class="ion-page" id="main-content">
         <ion-header translucent>
           <ion-toolbar>
             <ion-buttons slot="start">

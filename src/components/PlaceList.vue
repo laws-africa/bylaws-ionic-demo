@@ -1,5 +1,6 @@
 <template>
-  <ion-list>
+  <ion-spinner v-if="!this.places.length"/>
+  <ion-list v-else>
     <ion-item v-for="place in places" :key="place.id" @click="navigate(place)" detail>
       <ion-label>{{ place.name }}</ion-label>
     </ion-item>
@@ -7,14 +8,14 @@
 </template>
 
 <script>
-import { PLACES } from '@/store';
+import { getPlaces } from '@/store';
 
 export default {
   name: "PlaceList",
 
   data () {
     return {
-      'places': PLACES,
+      'places': getPlaces(),
     };
   },
 

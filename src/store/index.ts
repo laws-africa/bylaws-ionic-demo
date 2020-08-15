@@ -1,2 +1,2 @@
-export { PLACES, getPlace } from './places';
-export { getPlaceWorks, getWork } from './works';
+export { getPlaces, fetchPlace } from './places';
+export { fetchPlaceWorks } from './works';

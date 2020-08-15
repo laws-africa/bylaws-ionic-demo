@@ -19,11 +19,14 @@ export interface Work {
 export const WORKS: Work[] = [];
 
 // load works
-fetch('/works.json').then(resp => {
-  resp.json().then(works => {
-    (works as Work[]).forEach(w => {
-      w.id = w.frbr_uri.replace(/\//g, '-');
-      WORKS.push(w);
+const loading = new Promise((resolve) => {
+  fetch('/works.json').then(resp => {
+    resp.json().then(works => {
+      (works as Work[]).forEach(w => {
+        w.id = w.frbr_uri.replace(/\//g, '-');
+        WORKS.push(w);
+      });
+      resolve();
     });
   });
 });
@@ -35,4 +38,10 @@ export function getPlaceWorks(place: Place): Work[] {
 export function getWork(id: string): Work | null {
   const work = WORKS.find(w => w.id === id);
   return work ? work : null;
+}
+
+export function fetchPlaceWorks(place: Place): Promise<Work[] | null> {
+  return new Promise<Work[] | null>((resolve) => {
+    loading.then(() => resolve(getPlaceWorks(place)));
+  });
 }

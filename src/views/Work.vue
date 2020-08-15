@@ -8,7 +8,7 @@
           </ion-toolbar>
         </ion-header>
         <ion-content>
-          <TocMenu v-bind:toc="work.toc" />
+          <TocMenu v-bind:toc="work.toc" v-if="!loading" />
         </ion-content>
       </ion-menu>
 
@@ -23,12 +23,15 @@
         </ion-header>
 
         <ion-content padding fullscreen>
-          <div v-if="work.repealed" class="ion-margin-bottom ion-text-center">
-            <ion-text color="danger">
-              This {{ work.type_name|lower }} has been repealed.
-            </ion-text>
+          <ion-spinner v-if="loading"></ion-spinner>
+          <div v-else>
+            <div v-if="work.repealed" class="ion-margin-bottom ion-text-center">
+              <ion-text color="danger">
+                This {{ work.type_name|lower }} has been repealed.
+              </ion-text>
+            </div>
+            <div class="akoma-ntoso" v-html="work.content"></div>
           </div>
-          <div class="akoma-ntoso" v-html="work.content"></div>
         </ion-content>
       </div>
     </ion-split-pane>
@@ -36,7 +39,7 @@
 </template>
 
 <script>
-  import { getPlace, getWork } from "@/store";
+  import { fetchPlace, fetchPlaceWorks } from "@/store";
   import TocMenu from "@/components/TocMenu";
 
   export default {
@@ -44,14 +47,24 @@
     components: { TocMenu },
     data () {
       return {
-        'place': getPlace(this.$route.params.place),
-        'work': getWork(this.$route.params.work),
+        loading: true,
+        place: null,
+        work: null,
       };
     },
     filters: {
       lower (v) {
         return v.toLocaleLowerCase();
       }
+    },
+    created () {
+      fetchPlace(this.$route.params.place).then(place => {
+        this.place = place;
+        fetchPlaceWorks(this.place).then(works => {
+          this.loading = false;
+          this.work = works.find(w => w.id == this.$route.params.work);
+        });
+      });
     }
   };
 </script>

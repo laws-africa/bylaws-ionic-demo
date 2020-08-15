@@ -11,42 +11,49 @@
     </ion-header>
 
     <ion-content padding>
-      <WorkList v-bind:works="activeWorks" v-bind:title="'By-laws'" />
-      <WorkList v-bind:works="repealedWorks" v-bind:title="'Repealed'" v-if="repealedWorks"/>
+      <ion-spinner v-if="this.loading"></ion-spinner>
+      <div v-else>
+        <WorkList v-bind:works="activeWorks" v-bind:title="'By-laws'" />
+        <WorkList v-bind:works="repealedWorks" v-bind:title="'Repealed'" v-if="repealedWorks"/>
+      </div>
     </ion-content>
   </div>
 </template>
 
 <script>
-  import { getPlace } from "@/store";
-  import { WORKS } from "@/store/works";
+  import { fetchPlace, fetchPlaceWorks } from "@/store";
   import WorkList from '@/components/WorkList';
 
   export default {
     name: "Place",
     components: { WorkList },
+    data () {
+      return {
+        loading: true,
+        place: null,
+        works: [],
+      };
+    },
     computed: {
       activeWorks () {
-        const works = this.allWorks
-          .filter(w => this.place.works.includes(w.frbr_uri))
+        return this.works
           .filter(w => !w.stub && !w.repealed)
           .sort((a, b) => a.title.localeCompare(b.title));
-        return works;
       },
       repealedWorks () {
-        const works = this.allWorks
-          .filter(w => this.place.works.includes(w.frbr_uri))
+        return this.works
           .filter(w => !w.stub && w.repealed)
           .sort((a, b) => a.title.localeCompare(b.title));
-        return works;
       }
     },
-    data () {
-      const place = getPlace(this.$route.params.place);
-      return {
-        'place': place,
-        'allWorks': WORKS,
-      };
+    created () {
+      fetchPlace(this.$route.params.place).then(place => {
+        this.place = place;
+        fetchPlaceWorks(this.place).then(works => {
+          this.loading = false;
+          this.works = works;
+        });
+      });
     }
   };
 </script>

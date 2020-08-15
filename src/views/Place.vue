@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import { getPlace, getWorks } from "@/store";
+  import { getPlace, getPlaceWorks } from "@/store";
   import WorkList from '@/components/WorkList';
 
   export default {
@@ -27,7 +27,7 @@
       const place = getPlace(this.$route.params.id);
       return {
         'place': place,
-        'works': getWorks(place),
+        'works': getPlaceWorks(place),
       };
     }
   };

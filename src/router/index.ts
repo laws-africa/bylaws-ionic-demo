@@ -3,6 +3,7 @@ import { RouteConfig } from 'vue-router';
 import { IonicVueRouter } from '@ionic/vue';
 import Home from '../views/Home.vue';
 import Place from '../views/Place.vue';
+import Work from '../views/Work.vue';
 
 Vue.use(IonicVueRouter);
 
@@ -16,6 +17,11 @@ const routes: Array<RouteConfig> = [
     path: '/place/:id',
     name: 'place',
     component: Place,
+  },
+  {
+    path: '/work/:frbrUri',
+    name: 'work',
+    component: Work,
   }
 ];
 

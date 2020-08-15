@@ -13,7 +13,7 @@ export default {
 
   methods: {
     navigate (work) {
-      console.log(work);
+      this.$router.push('/work/' + work.frbrUri);
     }
   }
 };

@@ -6,7 +6,7 @@ export interface Place {
 
 export interface Work {
   title: string;
-  frbr_uri: string;
+  frbrUri: string;
   content: string;
 }
 
@@ -23,20 +23,24 @@ PLACES.sort((a, b) => a.name.localeCompare(b.name));
 
 export const WORKS: Work[] = [{
   'title': 'Water',
-  'frbr_uri': 'w',
+  'frbrUri': 'w',
   'content': 'some <b>html</b>'
 }, {
   'title': 'Refuse',
-  'frbr_uri': 'b',
+  'frbrUri': 'b',
   'content': 'some <b>more html</b>'
 }];
 
 export function getPlace(id: string): Place | null {
   const place = PLACES.find(p => p.id === id);
-  if (!place) return null;
-  return place;
+  return place ? place : null;
 }
 
-export function getWorks(place: Place): Work[] {
-  return WORKS.filter(w => place.works.includes(w.frbr_uri));
+export function getPlaceWorks(place: Place): Work[] {
+  return WORKS.filter(w => place.works.includes(w.frbrUri));
+}
+
+export function getWork(frbrUri: string): Work | null {
+  const work = WORKS.find(w => w.frbrUri === frbrUri);
+  return work ? work : null;
 }

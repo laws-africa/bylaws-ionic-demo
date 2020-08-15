@@ -2,7 +2,7 @@
   <div class="ion-page">
     <ion-header>
       <ion-toolbar>
-        <ion-title>By-laws</ion-title>
+        <ion-title>Places</ion-title>
       </ion-toolbar>
 
     </ion-header>

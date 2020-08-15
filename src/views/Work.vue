@@ -1,26 +1,44 @@
 <template>
   <div class="ion-page">
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button text="" default-href="/"></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{work ? work.title : ''}}</ion-title>
-      </ion-toolbar>
+    <ion-split-pane content-id="main-content">
+      <ion-menu content-id="main-content" side="start">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Contents</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <TocMenu v-bind:toc="work.toc" />
+        </ion-content>
+      </ion-menu>
 
-    </ion-header>
+      <div id="main-content">
+        <ion-header translucent>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-back-button text="" default-href="/"></ion-back-button>
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
 
-    <ion-content padding>
-      <div class="akoma-ntoso" v-html="work.content"></div>
-    </ion-content>
+            <ion-title>{{work.title}}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content padding fullscreen>
+          <div class="akoma-ntoso" v-html="work.content"></div>
+        </ion-content>
+      </div>
+    </ion-split-pane>
   </div>
 </template>
 
 <script>
   import { getPlace, getWork } from "@/store";
+  import TocMenu from "@/components/TocMenu";
 
   export default {
-    name: "Place",
+    name: "Work",
+    components: { TocMenu },
     data () {
       return {
         'place': getPlace(this.$route.params.id),

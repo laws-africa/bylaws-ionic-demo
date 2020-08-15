@@ -29,15 +29,14 @@
       activeWorks () {
         const works = this.allWorks
           .filter(w => this.place.works.includes(w.frbr_uri))
-          .filter(w => !w.stub)
+          .filter(w => !w.stub && !w.repealed)
           .sort((a, b) => a.title.localeCompare(b.title));
         return works;
       },
       repealedWorks () {
         const works = this.allWorks
           .filter(w => this.place.works.includes(w.frbr_uri))
-          .filter(w => !w.stub)
-          .filter(w => w.repealed)
+          .filter(w => !w.stub && w.repealed)
           .sort((a, b) => a.title.localeCompare(b.title));
         return works;
       }

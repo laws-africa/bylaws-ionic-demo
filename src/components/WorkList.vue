@@ -2,7 +2,10 @@
   <ion-list>
     <ion-list-header>{{ title }}</ion-list-header>
     <ion-item v-for="work in works" :key="work.frbr_uri" detail @click="navigate(work)">
-      <ion-label class="ion-text-wrap">{{ work.title }}</ion-label>
+      <ion-label class="ion-text-wrap">
+        <h2>{{ work.title }}</h2>
+        <p>{{ work.publication_date }}</p>
+      </ion-label>
     </ion-item>
   </ion-list>
 </template>

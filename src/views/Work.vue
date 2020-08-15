@@ -22,6 +22,12 @@
       </ion-header>
 
       <ion-content padding fullscreen>
+        <div v-if="work.repealed" class="ion-margin-bottom ion-text-center">
+          <ion-text color="danger">
+            This {{ work.type_name|lower }} has been repealed.
+          </ion-text>
+        </div>
+
         <div class="akoma-ntoso" v-html="work.content"></div>
       </ion-content>
     </div>
@@ -40,6 +46,11 @@
         'place': getPlace(this.$route.params.place),
         'work': getWork(this.$route.params.work),
       };
+    },
+    filters: {
+      lower (v) {
+        return v.toLocaleLowerCase();
+      }
     }
   };
 </script>

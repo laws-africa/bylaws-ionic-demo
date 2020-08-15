@@ -7,45 +7,32 @@ export interface TocItem {
 }
 
 export interface Work {
+  id: string;
   title: string;
-  frbrUri: string;
+  frbr_uri: string;
+  repealed: boolean;
+  stub: boolean;
   content: string;
   toc: TocItem[];
 }
 
-export const WORKS: Work[] = [{
-  'title': 'Water',
-  'frbrUri': 'w',
-  'toc': [{
-    'title': 'Section 1',
-    'id': 'sec_1',
-  }, {
-    'title': 'Section 2',
-    'id': 'sec_2',
-  }],
-  'content': 'some <b>html</b>'
-}, {
-  'title': 'Refuse',
-  'frbrUri': 'b',
-  'toc': [{
-    'title': 'Chapter 1',
-    'id': 'chp_1',
-    'children': [{
-      'title': 'Section 1',
-      'id': 'sec_1',
-    }, {
-      'title': 'Section 2',
-      'id': 'sec_2',
-    }]
-  }],
-  'content': 'some <b>more html</b>'
-}];
+export const WORKS: Work[] = [];
+
+// load works
+fetch('/works.json').then(resp => {
+  resp.json().then(works => {
+    (works as Work[]).forEach(w => {
+      w.id = w.frbr_uri.replace(/\//g, '-');
+      WORKS.push(w);
+    });
+  });
+});
 
 export function getPlaceWorks(place: Place): Work[] {
-  return WORKS.filter(w => place.works.includes(w.frbrUri));
+  return WORKS.filter(w => place.works.includes(w.frbr_uri));
 }
 
-export function getWork(frbrUri: string): Work | null {
-  const work = WORKS.find(w => w.frbrUri === frbrUri);
+export function getWork(id: string): Work | null {
+  const work = WORKS.find(w => w.id === id);
   return work ? work : null;
 }

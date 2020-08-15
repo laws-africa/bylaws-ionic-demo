@@ -18,8 +18,6 @@
             <ion-back-button text="" default-href="/"></ion-back-button>
             <ion-menu-button></ion-menu-button>
           </ion-buttons>
-
-          <ion-title>{{work.title}}</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -39,8 +37,8 @@
     components: { TocMenu },
     data () {
       return {
-        'place': getPlace(this.$route.params.id),
-        'work': getWork(this.$route.params.frbrUri),
+        'place': getPlace(this.$route.params.place),
+        'work': getWork(this.$route.params.work),
       };
     }
   };

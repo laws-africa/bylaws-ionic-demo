@@ -4,16 +4,15 @@ export interface Place {
   works: string[];
 }
 
-export const PLACES: Place[] = [{
-  'name': 'Cape Town',
-  'id': 'za-cpt',
-  'works': ['w', 'b']
-}, {
-  'name': 'Johannesburg',
-  'id': 'za-jhb',
-  'works': ['c', 'd']
-}];
-PLACES.sort((a, b) => a.name.localeCompare(b.name));
+export const PLACES: Place[] = [];
+
+// load places
+fetch('/places.json').then(resp => {
+  resp.json().then(places => {
+    (places as Place[]).forEach(p => PLACES.push(p));
+    PLACES.sort((a, b) => a.name.localeCompare(b.name));
+  });
+});
 
 export function getPlace(id: string): Place | null {
   const place = PLACES.find(p => p.id === id);

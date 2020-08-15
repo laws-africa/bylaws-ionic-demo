@@ -1,7 +1,8 @@
 <template>
   <ion-list>
+    <ion-list-header>{{ title }}</ion-list-header>
     <ion-item v-for="work in works" :key="work.frbr_uri" detail @click="navigate(work)">
-      <ion-label>{{ work.title }}</ion-label>
+      <ion-label class="ion-text-wrap">{{ work.title }}</ion-label>
     </ion-item>
   </ion-list>
 </template>
@@ -9,11 +10,11 @@
 <script>
 export default {
   name: "WorkList",
-  props: ['works'],
+  props: ['works', 'title'],
 
   methods: {
     navigate (work) {
-      this.$router.push('/work/' + work.frbrUri);
+      this.$router.push('/place/' + this.$route.params.place + '/work/' + work.id);
     }
   }
 };

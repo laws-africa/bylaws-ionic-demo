@@ -11,23 +11,42 @@
     </ion-header>
 
     <ion-content padding>
-      <WorkList v-bind:works="works" />
+      <WorkList v-bind:works="activeWorks" v-bind:title="'By-laws'" />
+      <WorkList v-bind:works="repealedWorks" v-bind:title="'Repealed'" v-if="repealedWorks"/>
     </ion-content>
   </div>
 </template>
 
 <script>
-  import { getPlace, getPlaceWorks } from "@/store";
+  import { getPlace } from "@/store";
+  import { WORKS } from "@/store/works";
   import WorkList from '@/components/WorkList';
 
   export default {
     name: "Place",
     components: { WorkList },
+    computed: {
+      activeWorks () {
+        const works = this.allWorks
+          .filter(w => this.place.works.includes(w.frbr_uri))
+          .filter(w => !w.stub)
+          .sort((a, b) => a.title.localeCompare(b.title));
+        return works;
+      },
+      repealedWorks () {
+        const works = this.allWorks
+          .filter(w => this.place.works.includes(w.frbr_uri))
+          .filter(w => !w.stub)
+          .filter(w => w.repealed)
+          .sort((a, b) => a.title.localeCompare(b.title));
+        return works;
+      }
+    },
     data () {
-      const place = getPlace(this.$route.params.id);
+      const place = getPlace(this.$route.params.place);
       return {
         'place': place,
-        'works': getPlaceWorks(place),
+        'allWorks': WORKS,
       };
     }
   };
